@@ -1,0 +1,11 @@
+{
+  "name": "meteomatics Weather Station",
+  "version": "1.0.1",
+  "id": "at.madlmayr.bj.weatherstation",
+  "license": "MIT",
+  "description": "meteomatics Weather Station",
+  "url": "https://www.busch-jaeger.de",
+  "author": "Gerald Madlmayr",
+  "type": "app",
+  "entryPoint": "build/main.js"
+}
