@@ -8,6 +8,7 @@ Addon for free@home to simulate a virtual weather station with data from a publi
 * [Sample App](https://github.com/Busch-Jaeger/node-free-at-home-example)
 * [Free@Home Lib](https://github.com/Busch-Jaeger/node-free-at-home)
 * [ABB Portal](https://developer.eu.mybuildings.abb.com/tutorials)
+* [List of Possible Virtual Device](https://github.com/Busch-Jaeger/node-free-at-home/blob/master/src/freeAtHome.ts)
 
 # Docs Infos
 
@@ -21,8 +22,6 @@ Docu: https://www.meteomatics.com/en/api/request/api-requests-oauth-authentifica
 ## Request
 
 * API Call: https://api.meteomatics.com/2023-07-26T12:19:00Z/t_2m:C,precip_1h:mm,wind_speed_10m:ms,wind_dir_10m:d,wind_gusts_10m_1h:ms,uv:idx/48.17496316252979,11.459006501063644/json
-* username = 'geraldmadlmayr_madlmayr'
-* password = 'maZM24tCv6'
 
 ## Response
 

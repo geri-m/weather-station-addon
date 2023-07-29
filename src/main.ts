@@ -5,8 +5,8 @@ const freeAtHome = new FreeAtHome();
 freeAtHome.activateSignalHandling();
 
 // credentials to access weather API.
-var username = 'geraldmadlmayr_madlmayr'
-var password = 'maZM24tCv6'
+var username = ''
+var password = ''
 
 // Definition of the Bearer Token we get for OAuth
 interface Token { access_token: string, token_type: string }
