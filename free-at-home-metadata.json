@@ -10,26 +10,17 @@
   "entryPoint": "build/main.js",
   "parameters": {
     "default": {
-        "name": "Settings",
-        "items": {
-            "username": {
-                "name": "Username",
-                "type": "string"
-            },
-            "apiKey": {
-                "name": "Password",
-                "type": "string"
-            },
-            "ignoreReachability": {
-                "name": "Ignore reachability",
-                "type": "boolean"
-            },
-            "port": {
-                "name": "Port",
-                "type": "number",
-                "min": 1024,
-                "max": 65535
-            }
+      "name": "Settings",
+      "items": {
+        "username": {
+          "name": "Username",
+          "type": "string"
+        },
+        "apiKey": {
+          "name": "Password",
+          "type": "string"
         }
+      }
     }
+  }
 }

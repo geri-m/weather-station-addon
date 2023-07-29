@@ -38,26 +38,26 @@ async function main() {
   meteomatics.rain.setAutoKeepAlive(true);
   meteomatics.rain.setAutoConfirm(true);
   meteomatics.rain.isAutoConfirm = true;
-  
+
   // we have 500 queries per day, so running ever 3 minutes
-  var minutes = 3, the_interval = minutes  * 60  * 1000;
+  var minutes = 3, the_interval = minutes * 60 * 1000;
   setInterval(async function () {
 
-    if(username == '') {
+    if (username == '') {
       console.warn('Username is not set. Please enter your password in the settings');
       return;
-    }  
+    }
 
-    if(password == '') {
+    if (password == '') {
       console.warn('Password is not set. Please enter your password in the settings');
       return;
     }
-          
+
     console.log("Update Data.")
     await fetchAccessToken().then(token => fetchWeatherData(token).then(function (weatherResponse) {
 
       let temperatureValue = weatherResponse.data.find(data => data.parameter == "t_2m:C")?.coordinates[0].dates[0].value;
-      if(temperatureValue !== undefined){
+      if (temperatureValue !== undefined) {
         meteomatics.temperature.setTemperature(temperatureValue);
         console.log('Temperature is ${temperatureValue}');
       } else {
@@ -65,7 +65,7 @@ async function main() {
       }
 
       let rainValue = weatherResponse.data.find(data => data.parameter == "precip_1h:mm")?.coordinates[0].dates[0].value;
-      if(rainValue !== undefined){
+      if (rainValue !== undefined) {
         meteomatics.rain.setIsRaining(rainValue > 1);
         console.log('Rain is ${(rainValue >1))}');
       } else {
@@ -73,7 +73,7 @@ async function main() {
       }
 
       let windSpeedValue = weatherResponse.data.find(data => data.parameter == "wind_speed_10m:ms")?.coordinates[0].dates[0].value;
-      if(windSpeedValue !== undefined){
+      if (windSpeedValue !== undefined) {
         meteomatics.wind.setWindSpeed(windSpeedValue);
         console.log('Wind is  ${windSpeedValue} m/s');
       } else {
@@ -110,7 +110,7 @@ async function fetchAccessToken() {
 async function fetchWeatherData(oauth2Token: string) {
 
   // Format needs to be 2023-07-26T12:19:00Z
-  let dateString = new Date().toISOString(); 
+  let dateString = new Date().toISOString();
   let url = "https://api.meteomatics.com/${dateString}/t_2m:C,precip_1h:mm,wind_speed_10m:ms/48.17496316252979,11.459006501063644/json?access_token=${oauth2Token}";
   const resp = await fetch(url, {
     method: 'GET'
@@ -129,15 +129,16 @@ main();
 // Get notified about changes in the configuration of the add on
 //#################################################################################
 
-import {AddOn} from '@busch-jaeger/free-at-home';
+import { AddOn } from '@busch-jaeger/free-at-home';
 
 const metaData = AddOn.readMetaData();
 
 const addOn = new AddOn.AddOn(metaData.id);
 
 addOn.on("configurationChanged", (configuration: AddOn.Configuration) => {
-    console.log(configuration);
-    username = configuration.default?.items?.["username"] ?? "";
-    password = configuration.default?.items?.["password"] ?? "";
+  // TODO: Remove, as this would also log out the password.
+  console.log(configuration);
+  username = configuration.default?.items?.["Username"] ?? "";
+  password = configuration.default?.items?.["Password"] ?? "";
 })
 addOn.connectToConfiguration();
