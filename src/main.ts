@@ -5,8 +5,8 @@ const freeAtHome = new FreeAtHome();
 freeAtHome.activateSignalHandling();
 
 // credentials to access weather API.
-const username = 'geraldmadlmayr_madlmayr'
-const password = 'maZM24tCv6'
+var username = 'geraldmadlmayr_madlmayr'
+var password = 'maZM24tCv6'
 
 // Definition of the Bearer Token we get for OAuth
 interface Token { access_token: string, token_type: string }
@@ -27,6 +27,7 @@ const isWeatherResponse = (data: any): data is WeatherResponse => {
 }
 
 async function main() {
+
   const meteomatics = await freeAtHome.createWeatherStationDevice("VirtualWeatherStation", "meteomatics Wetter")
   meteomatics.wind.setAutoKeepAlive(true);
   meteomatics.wind.setAutoConfirm(true);
@@ -41,6 +42,17 @@ async function main() {
   // we have 500 queries per day, so running ever 3 minutes
   var minutes = 3, the_interval = minutes  * 60  * 1000;
   setInterval(async function () {
+
+    if(username == '') {
+      console.warn('Username is not set. Please enter your password in the settings');
+      return;
+    }  
+
+    if(password == '') {
+      console.warn('Password is not set. Please enter your password in the settings');
+      return;
+    }
+          
     console.log("Update Data.")
     await fetchAccessToken().then(token => fetchWeatherData(token).then(function (weatherResponse) {
 
@@ -113,3 +125,19 @@ async function fetchWeatherData(oauth2Token: string) {
 }
 
 main();
+
+// Get notified about changes in the configuration of the add on
+//#################################################################################
+
+import {AddOn} from '@busch-jaeger/free-at-home';
+
+const metaData = AddOn.readMetaData();
+
+const addOn = new AddOn.AddOn(metaData.id);
+
+addOn.on("configurationChanged", (configuration: AddOn.Configuration) => {
+    console.log(configuration);
+    username = configuration.default?.items?.["username"] ?? "";
+    password = configuration.default?.items?.["password"] ?? "";
+})
+addOn.connectToConfiguration();

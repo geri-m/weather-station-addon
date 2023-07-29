@@ -4,8 +4,32 @@
   "id": "at.madlmayr.bj.weatherstation",
   "license": "MIT",
   "description": "meteomatics Weather Station",
-  "url": "https://www.busch-jaeger.de",
+  "url": "https://github.com/geri-m/weather-station-addon",
   "author": "Gerald Madlmayr",
   "type": "app",
-  "entryPoint": "build/main.js"
+  "entryPoint": "build/main.js",
+  "parameters": {
+    "default": {
+        "name": "Settings",
+        "items": {
+            "username": {
+                "name": "Username",
+                "type": "string"
+            },
+            "apiKey": {
+                "name": "Password",
+                "type": "string"
+            },
+            "ignoreReachability": {
+                "name": "Ignore reachability",
+                "type": "boolean"
+            },
+            "port": {
+                "name": "Port",
+                "type": "number",
+                "min": 1024,
+                "max": 65535
+            }
+        }
+    }
 }
