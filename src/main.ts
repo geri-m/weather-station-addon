@@ -8,13 +8,13 @@ freeAtHome.activateSignalHandling();
 const username = 'geraldmadlmayr_madlmayr'
 const password = 'maZM24tCv6'
 
-// Defintion of the Bearer Token we get for OAuth
+// Definition of the Bearer Token we get for OAuth
 interface Token { access_token: string, token_type: string }
 
-// Defintion of the Weather Object we get from the API
+// Definition of the Weather Object we get from the API
 interface WeatherResponse { version: string, user: string, dateGenerated: Date, status: string, data: WeatherData[] }
-interface WeatherData { parameter: string, coordinates: WeatherCoordindate[] }
-interface WeatherCoordindate { lat: string, long: string, dates: WeatherDateDataObj[] }
+interface WeatherData { parameter: string, coordinates: WeatherCoordinate[] }
+interface WeatherCoordinate { lat: string, long: string, dates: WeatherDateDataObj[] }
 interface WeatherDateDataObj { date: Date, value: number }
 
 // Basic Guard Function
@@ -38,7 +38,7 @@ async function main() {
   meteomatics.rain.setAutoConfirm(true);
   meteomatics.rain.isAutoConfirm = true;
   
-  // we have 500 querys per day, so running ever 3 mintues
+  // we have 500 queries per day, so running ever 3 minutes
   var minutes = 3, the_interval = minutes  * 60  * 1000;
   setInterval(async function () {
     console.log("Update Data.")
@@ -47,15 +47,15 @@ async function main() {
       let temperatureValue = weatherResponse.data.find(data => data.parameter == "t_2m:C")?.coordinates[0].dates[0].value;
       if(temperatureValue !== undefined){
         meteomatics.temperature.setTemperature(temperatureValue);
-        console.log('Temperatur is ' + temperatureValue + " C");
+        console.log('Temperature is ${temperatureValue}');
       } else {
-        console.log('Temperatur is not defined');
+        console.log('Temperature is not defined');
       }
 
       let rainValue = weatherResponse.data.find(data => data.parameter == "precip_1h:mm")?.coordinates[0].dates[0].value;
       if(rainValue !== undefined){
         meteomatics.rain.setIsRaining(rainValue > 1);
-        console.log('Rain is ' + (rainValue >1));
+        console.log('Rain is ${(rainValue >1))}');
       } else {
         console.log('Rain is not defined');
       }
@@ -63,12 +63,12 @@ async function main() {
       let windSpeedValue = weatherResponse.data.find(data => data.parameter == "wind_speed_10m:ms")?.coordinates[0].dates[0].value;
       if(windSpeedValue !== undefined){
         meteomatics.wind.setWindSpeed(windSpeedValue);
-        console.log('Wind is ' + (windSpeedValue) + "m/s");
+        console.log('Wind is  ${windSpeedValue} m/s');
       } else {
         console.log('Wind is not defined');
       }
     }).catch(function (err) {
-      console.log('something went wrong', err);
+      console.log('Error on updating values of weather station', err);
     }));
   }, the_interval);
 }
@@ -93,7 +93,7 @@ async function fetchAccessToken() {
 
 /** 
  * Method for Fetching the Weather Data from meteomatics
- * @returns WeatherResponseObjcect with the most current Data. 
+ * @returns WeatherResponseObject with the most current Data. 
  */
 async function fetchWeatherData(oauth2Token: string) {
 
