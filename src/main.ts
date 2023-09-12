@@ -27,8 +27,9 @@ const isWeatherResponse = (data: any): data is WeatherResponse => {
 }
 
 async function main() {
+  console.log('Weather Station Started');
 
-  const meteomatics = await freeAtHome.createWeatherStationDevice("VirtualWeatherStation", "meteomatics Wetter")
+  const meteomatics = await freeAtHome.createWeatherStationDevice("VirtualWeatherStation", "meteomatics Wetter");
   meteomatics.wind.setAutoKeepAlive(true);
   meteomatics.wind.setAutoConfirm(true);
   meteomatics.wind.isAutoConfirm = true;
@@ -39,8 +40,9 @@ async function main() {
   meteomatics.rain.setAutoConfirm(true);
   meteomatics.rain.isAutoConfirm = true;
 
+
   // we have 500 queries per day, so running ever 3 minutes
-  var minutes = 3, the_interval = minutes * 60 * 1000;
+  var minutes = 3, the_interval = minutes * 1000 * 60;
   setInterval(async function () {
 
     if (username == '') {
@@ -59,7 +61,7 @@ async function main() {
       let temperatureValue = weatherResponse.data.find(data => data.parameter == "t_2m:C")?.coordinates[0].dates[0].value;
       if (temperatureValue !== undefined) {
         meteomatics.temperature.setTemperature(temperatureValue);
-        console.log('Temperature is ${temperatureValue}');
+        console.log('Temperature is ', temperatureValue);
       } else {
         console.log('Temperature is not defined');
       }
@@ -67,7 +69,7 @@ async function main() {
       let rainValue = weatherResponse.data.find(data => data.parameter == "precip_1h:mm")?.coordinates[0].dates[0].value;
       if (rainValue !== undefined) {
         meteomatics.rain.setIsRaining(rainValue > 1);
-        console.log('Rain is ${(rainValue >1))}');
+        console.log('Rain is ', rainValue > 1);
       } else {
         console.log('Rain is not defined');
       }
@@ -75,7 +77,7 @@ async function main() {
       let windSpeedValue = weatherResponse.data.find(data => data.parameter == "wind_speed_10m:ms")?.coordinates[0].dates[0].value;
       if (windSpeedValue !== undefined) {
         meteomatics.wind.setWindSpeed(windSpeedValue);
-        console.log('Wind is  ${windSpeedValue} m/s');
+        console.log('Wind is ', windSpeedValue, ' m/s');
       } else {
         console.log('Wind is not defined');
       }
@@ -83,6 +85,7 @@ async function main() {
       console.log('Error on updating values of weather station', err);
     }));
   }, the_interval);
+
 }
 
 /**
@@ -111,7 +114,7 @@ async function fetchWeatherData(oauth2Token: string) {
 
   // Format needs to be 2023-07-26T12:19:00Z
   let dateString = new Date().toISOString();
-  let url = "https://api.meteomatics.com/${dateString}/t_2m:C,precip_1h:mm,wind_speed_10m:ms/48.17496316252979,11.459006501063644/json?access_token=${oauth2Token}";
+  let url = "https://api.meteomatics.com/" + dateString + "/t_2m:C,precip_1h:mm,wind_speed_10m:ms/48.17496316252979,11.459006501063644/json?access_token=" + oauth2Token;
   const resp = await fetch(url, {
     method: 'GET'
   });
@@ -138,7 +141,7 @@ const addOn = new AddOn.AddOn(metaData.id);
 addOn.on("configurationChanged", (configuration: AddOn.Configuration) => {
   // TODO: Remove, as this would also log out the password.
   console.log(configuration);
-  username = configuration.default?.items?.["Username"] ?? "";
-  password = configuration.default?.items?.["Password"] ?? "";
+  username =  configuration.default?.items?.["Username"] ?? "";
+  password =  configuration.default?.items?.["Password"] ?? "";
 })
 addOn.connectToConfiguration();

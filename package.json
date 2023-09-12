@@ -18,7 +18,7 @@
   "author": "Gerald Madlmayr (gerald@madlmayr.at)",
   "license": "MIT",
   "dependencies": {
-    "@busch-jaeger/free-at-home": "0.29.0",
+    "@busch-jaeger/free-at-home": "0.30.0",
     "cross-fetch": "^3.1.5"
   },
   "devDependencies": {
